@@ -1,0 +1,7 @@
+<odoo>
+  <record id="stock_landed_inherit_form_view" model="ir.ui.view">
+    <field name="name">stock.landed.inherit.form.view</field>
+    <field name="model">stock.landed.cost</field>
+    <field name="inherit_id" ref="" />
+  </record>
+</odoo>

@@ -1,0 +1,46 @@
+<odoo>
+  <data>
+    <template id="report_invoice_document_swift" inherit_id="account.report_invoice_document">
+      <xpath expr="//div[@class='page mb-4']" position="before">
+        <table id="info-documento" class="tabla-contenido">
+          <tr>
+            <td class="tabla-elemento">
+              <strong class="strong_block">Tipo de documento</strong>
+              <span t-field="o.tipo_factura" />
+            </td>
+            <td class="tabla-elemento">
+              <strong class="strong_block">Serie</strong>
+              <span t-field="o.serie" />
+            </td>
+            <td class="tabla-elemento">
+              <strong class="strong_block">Número de autorización</strong>
+              <span t-field="o.numero_autorizacion" />
+            </td>
+          </tr>
+        </table>
+      </xpath>
+      <xpath expr="//table[@id='info-documento']" position="after">
+        <div id="frases-documento">
+          <strong class="strong_block">Frases</strong>
+          <div t-if="o.company_id.tipo_contribuyente == 'general'">
+            <span t-if="o.company_id.regimen_isr == 'utilities'">Sujeto a pagos trimestrales ISR</span>
+            <span t-if="o.company_id.regimen_isr == 'simplified'">Sujeto a retención definitiva ISR</span>
+          </div>
+          <span t-if="o.company_id.retenedor_iva">Agente de Retención del IVA</span>
+        </div>
+      </xpath>
+      <xpath expr="//div[@class='mt-5 clearfix']" position="after">
+        <div id="footer-documento">
+          <small class="footer-text">Número de autorización: <span t-field="o.numero_autorizacion" /></small>
+          <small class="footer-text">Fecha y hora de certificación: <span
+              t-field="o.fecha_certificacion" /></small>
+          <small class="footer-text">Certificador: <span t-field="o.company_id.proveedor" /></small>
+          <small class="footer-text">NIT certificador: 12521337</small>
+        </div>
+      </xpath>
+      <xpath expr="/t/t[1]" position="inside">
+        <link rel="stylesheet" href="/fel/static/src/css/reporte_factura.css" />
+      </xpath>
+    </template>
+  </data>
+</odoo>

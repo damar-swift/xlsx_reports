@@ -1,0 +1,90 @@
+<odoo>
+  <record id="account_move_header_inherit" model="ir.ui.view">
+    <field name="name">account.move.header.inherit</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//header" position="before">
+        <field name="certificada" invisible="1" />
+        <field name="certificacion_error" invisible="1" />
+        <div class="alert alert-danger" role="alert"
+          invisible="certificada or not certificacion_error">
+          La factura no se certificó, revise los "Datos FEL" para ver los errores.
+        </div>
+      </xpath>
+      <xpath expr="//button[@name='action_reverse']" position="after">
+        <button name="action_debit_note" string="Nota de débito" type="object"
+          groups="account.group_account_invoice"
+          invisible="move_type not in ('out_invoice', 'in_invoice') or state != 'posted' or factura_especial" />
+      </xpath>
+      <xpath expr="//header" position="inside">
+        <field name="facturacion_electronica_activa" invisible="1" />
+        <button name="boton_anular" string="Anular" type="object"
+          groups="account.group_account_invoice"
+          invisible="state != 'posted' or not facturacion_electronica_activa" />
+      </xpath>
+      <xpath expr="//button[@name='button_draft']" position="attributes">
+        <attribute name="invisible">facturacion_electronica_activa or not show_reset_to_draft_button</attribute>
+      </xpath>
+      <xpath expr="//field[@name='payment_reference']" position="after">
+        <field name="tipo_factura"
+          invisible="move_type not in ['in_invoice'] or factura_especial"
+          readonly="state == 'posted'" string="Tipo de documento" />
+      </xpath>
+      <xpath expr="//field[@name='tipo_factura']" position="after">
+        <field name="tipo_pago" invisible="move_type not in ['in_invoice']"
+          readonly="state == 'posted'" />
+      </xpath>
+    </field>
+  </record>
+
+
+  <record id="account_move_inherit_view" model="ir.ui.view">
+    <field name="name">account.move.inherit.view</field>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//notebook" position="inside">
+        <page string="Datos FEL"
+          invisible="move_type in ['in_invoice', 'in_refund'] and not factura_especial">
+          <group string="Información de certificación">
+            <group>
+              <field name="numero_autorizacion" />
+              <field name="serie" />
+              <field name="numero_dte" />
+              <field name="numero_acceso" />
+              <field name="xml_generado" widget="CopyClipboardChar" />
+              <field name="xml_certificado" widget="CopyClipboardChar" />
+            </group>
+            <group>
+              <field name="fecha_emision" />
+              <field name="fecha_certificacion" />
+              <field name="json_temporal" widget="CopyClipboardChar" />
+            </group>
+          </group>
+          <group string="Información de anulación" invisible="state!='cancel'">
+            <group>
+              <field name="numero_anulacion" />
+              <field name="anulacion_serie" />
+              <field name="numero_dte_anulado" />
+              <field name="xml_cancelado_generado" widget="CopyClipboardChar" />
+              <field name="xml_cancelado_certificado" widget="CopyClipboardChar" />
+            </group>
+            <group>
+              <field name="numero_acceso_anulacion" />
+              <field name="motivo_anulacion" readonly="1" />
+              <field name="fecha_anulacion" />
+              <field name="json_temporal" widget="CopyClipboardChar" />
+            </group>
+          </group>
+          <field name="errores_fel_id">
+            <tree>
+              <field name="fecha_hora_error" />
+              <field name="mensaje_error" />
+            </tree>
+          </field>
+        </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>

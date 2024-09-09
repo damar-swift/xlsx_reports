@@ -1,0 +1,20 @@
+.tabla-contenido {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 3.5rem;
+  border: none;
+}
+
+.tabla-elemento {
+  background: #ffffff;
+  border: none;
+}
+
+.strong_block {
+  display: block;
+}
+
+.footer-text {
+  font-size: 0.7rem;
+  display: block;
+}
