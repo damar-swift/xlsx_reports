@@ -1,0 +1,31 @@
+<odoo>
+  <record id="res_company_information_view" model="ir.ui.view">
+    <field name="name">res.company.information.view</field>
+    <field name="model">res.company</field>
+    <field name="inherit_id" ref="base.view_company_form" />
+    <field name="arch" type="xml">
+      <xpath expr="//field[@name='vat']" position="attributes">
+        <attribute name="string">NIT</attribute>
+      </xpath>
+      <xpath expr="//field[@name='partner_id']" position="after">
+        <field name="razon_social" readonly="1" />
+      </xpath>
+      <xpath expr="//notebook" position="inside">
+        <page string="Configuración FEL">
+          <group string="Datos del certificador">
+            <group>
+              <field name="proveedor" />
+              <field name="usuario" />
+              <field name="llave_firma" />
+              <field name="llave_api" />
+              <field name="tipo_contribuyente" />
+              <field name="retenedor_iva" invisible="tipo_contribuyente != 'general'" />
+              <field name="porcentaje_retencion" widget="percentage" invisible="not retenedor_iva" />
+              <field name="regimen_isr" invisible="tipo_contribuyente != 'general'" />
+            </group>
+          </group>
+        </page>
+      </xpath>
+    </field>
+  </record>
+</odoo>
